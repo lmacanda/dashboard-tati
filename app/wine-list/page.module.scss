@@ -1,0 +1,32 @@
+.wineList {
+  background-color: rgb(221, 218, 186);
+  &_title {
+    text-align: center;
+
+    &_table {
+      width: 100%;
+      border-collapse: collapse;
+      border-spacing: 0;
+      margin-bottom: 1rem;
+      color: #212529;
+      background-color: transparent;
+      text-align: left;
+
+      th,
+      td {
+        border: 1px solid;
+        width: 1%;
+      }
+
+      th {
+        vertical-align: top;
+
+        padding: 0.75rem;
+      }
+
+      td {
+        padding: 0.75rem;
+      }
+    }
+  }
+}

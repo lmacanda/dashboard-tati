@@ -1,0 +1,53 @@
+.form {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  margin: 0 auto;
+  border: 1px solid;
+  border-radius: 5px;
+  padding: 3%;
+
+  &_item {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.5%;
+    }
+
+    input {
+      margin-bottom: 10px;
+      padding: 1%;
+    }
+  }
+  &_btn {
+    display: flex;
+    justify-content: center;
+    gap: 1%;
+
+    &_cancel {
+      background-color: white;
+      color: black;
+    }
+
+    &_add {
+      background-color: black;
+      color: white;
+    }
+
+    button {
+      width: 50%;
+      margin-top: 10px;
+      padding: 1%;
+      font-size: 1rem;
+      font-weight: 700;
+
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  }
+}
