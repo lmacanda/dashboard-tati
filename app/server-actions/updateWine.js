@@ -1,10 +1,10 @@
 "use server";
-
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
+import { revalidatePath } from "next/cache";
 
-export async function addWine(formData) {
+export async function updateWine(formData) {
+  const id = formData.get("id");
   const name = formData.get("name");
   const producer = formData.get("producer");
   const year = formData.get("year");
@@ -19,14 +19,15 @@ export async function addWine(formData) {
 
   const { data, error } = await supabase
     .from("wines")
-    .insert([{ name, producer, year, region, grapes, color, price, quantity }]);
+    .update({ name, producer, year, region, grapes, color, price, quantity })
+    .match({ id });
 
   if (error) {
     console.error(error);
-    return { error: "error inserting data", error };
+    return { error: "error updating data", error };
   }
 
   revalidatePath("/wine-list");
 
-  return { message: "Wine added successfully!" };
+  return { message: "Wine updated successfully!" };
 }

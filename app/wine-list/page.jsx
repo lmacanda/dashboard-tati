@@ -1,20 +1,42 @@
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+"use client";
 
+import { useState, useEffect } from "react";
+import { fetchWines } from "../server-actions/supabaseFetch";
+import { deleteWine } from "../server-actions/deleteWine";
 import EditWine from "../components/editWine/EditWine";
 import WineForm from "../components/wineForm/WineForm";
-
 import styles from "./page.module.scss";
 
-export default async function WinesList() {
-  const cookieStore = cookies();
-  const supabase = createServerComponentClient({ cookies: () => cookieStore });
+export default function WinesList() {
+  const [wines, setWines] = useState([]);
+  const [error, setError] = useState(null);
 
-  const { data: wines, error } = await supabase.from("wines").select("*");
+  const fetchData = async () => {
+    try {
+      const { data, error } = await fetchWines();
+      if (error) {
+        throw new Error("Error fetching wine data");
+      }
+      setWines(data || []);
+    } catch (error) {
+      setError(error.message);
+    }
+  };
 
-  if (error) {
-    console.error("error fetching wine data");
-  }
+  useEffect(() => {
+    // Fetch initial data on component mount
+    fetchData();
+
+    // Set up periodic refresh every 5 seconds
+    const intervalId = setInterval(fetchData, 2000);
+
+    // Clean up the interval on component unmount
+    return () => clearInterval(intervalId);
+  }, []); // Run once on component mount
+
+  const handleWineAdded = (newWine) => {
+    setWines([...wines, newWine]);
+  };
 
   return (
     <main className={styles.wineList}>
@@ -22,7 +44,7 @@ export default async function WinesList() {
       <form action="/auth/signout" method="post">
         <button type="submit">Sign Out</button>
       </form>
-      <WineForm />
+      <WineForm onWineAdded={handleWineAdded} />
 
       <div>
         <table className={styles.wineList_table}>
@@ -34,29 +56,31 @@ export default async function WinesList() {
               <th>Grapes</th>
               <th>Color</th>
               <th>Price</th>
-              <th>Quantity Left</th>
+              <th>Quantity</th>
               <th></th>
               <th></th>
             </tr>
           </thead>
 
           <tbody>
-            {wines &&
-              wines.map((wine) => (
-                <tr key={wine.id}>
-                  <td>{wine.name}</td>
-                  <td>{wine.producer}</td>
-                  <td>{wine.from}</td>
-                  <td>{wine.grapes}</td>
-                  <td>{wine.color}</td>
-                  <td>{wine.price}€</td>
-                  <td>{wine.quantity_left}</td>
-                  <td>
-                    <button>edit</button>
-                  </td>
-                  <EditWine wine={wine} />
-                </tr>
-              ))}
+            {wines.map((wine) => (
+              <tr key={wine.id}>
+                <td>{wine.name}</td>
+                <td>{wine.producer}</td>
+                <td>{wine.from}</td>
+                <td>{wine.grapes}</td>
+                <td>{wine.color}</td>
+                <td>{wine.price}€</td>
+                <td>{wine.quantity}</td>
+                <td>
+                  <form action={deleteWine}>
+                    <input type="hidden" name="id" value={wine.id} />
+                    <button type="submit">Delete</button>
+                  </form>
+                </td>
+                <EditWine wine={wine} />
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

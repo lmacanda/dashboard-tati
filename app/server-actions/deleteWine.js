@@ -4,22 +4,17 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
-export async function addWine(formData) {
-  const name = formData.get("name");
-  const producer = formData.get("producer");
-  const year = formData.get("year");
-  const region = formData.get("region");
-  const grapes = formData.get("grapes");
-  const color = formData.get("color");
-  const price = formData.get("price");
-  const quantity = formData.get("quantity");
+export async function deleteWine(formData) {
+  const wineID = formData.get("id");
+  console.log(wineID);
 
   const cookiesStore = cookies();
   const supabase = createServerComponentClient({ cookies: () => cookiesStore });
 
   const { data, error } = await supabase
     .from("wines")
-    .insert([{ name, producer, year, region, grapes, color, price, quantity }]);
+    .delete()
+    .match({ id: wineID });
 
   if (error) {
     console.error(error);
