@@ -1,0 +1,20 @@
+$primary-darkColor900: black;
+$primary-darkColor800: #2e2d2d;
+$primary-lightColor: white;
+$primary-tatiColor: rgb(221, 218, 186);
+
+@mixin button($background-color, $text-color, $hover-background-color) {
+  background-color: $background-color;
+  color: $text-color;
+  padding: 1%;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+
+  &:hover {
+    background-color: $hover-background-color;
+  }
+}

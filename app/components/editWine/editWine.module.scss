@@ -1,0 +1,13 @@
+@import "../../base";
+
+.editWine {
+  &_edit_btn {
+    @include button($primary-lightColor, $primary-darkColor900, null);
+    width: 100%;
+    margin-top: 3%;
+
+    &:hover {
+      border: 1px solid $primary-darkColor900;
+    }
+  }
+}

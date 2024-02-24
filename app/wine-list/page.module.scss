@@ -1,32 +1,47 @@
+@import "../base";
+
 .wineList {
-  background-color: rgb(221, 218, 186);
+  background-color: $primary-tatiColor;
   &_title {
     text-align: center;
+  }
 
-    &_table {
+  &_table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-bottom: 1rem;
+    color: #212529;
+    background-color: transparent;
+    text-align: left;
+    border: 1px solid #1b1b1b;
+    margin-top: 3%;
+
+    th,
+    td {
+      width: 1%;
+      border: 1px solid #1b1b1b;
+    }
+
+    th {
+      vertical-align: top;
+      border: 1px solid #1b1b1b;
+
+      padding: 0.75rem;
+    }
+
+    td {
+      padding: 0.75rem;
+    }
+
+    &_delete_btn {
+      @include button(
+        $primary-darkColor900,
+        $primary-lightColor,
+        $primary-darkColor800
+      );
       width: 100%;
-      border-collapse: collapse;
-      border-spacing: 0;
-      margin-bottom: 1rem;
-      color: #212529;
-      background-color: transparent;
-      text-align: left;
-
-      th,
-      td {
-        border: 1px solid;
-        width: 1%;
-      }
-
-      th {
-        vertical-align: top;
-
-        padding: 0.75rem;
-      }
-
-      td {
-        padding: 0.75rem;
-      }
+      margin-top: 3%;
     }
   }
 }

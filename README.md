@@ -9,4 +9,4 @@ Full stack application that I'm building for a wine restaurant to manage the win
 
 - Next.Js 14
 - Supabase (Database)
-- Css
+- sass

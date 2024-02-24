@@ -1,53 +1,65 @@
-.form {
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  width: 50%;
-  margin: 0 auto;
-  border: 1px solid;
-  border-radius: 5px;
-  padding: 3%;
+@import "../../base";
 
-  &_item {
+.wineForm {
+  &_add_btn {
+    @include button(
+      $primary-darkColor900,
+      $primary-lightColor,
+      $primary-darkColor800
+    );
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 3%;
+  }
+  &_form {
+    background-color: $primary-lightColor;
     display: flex;
     flex-direction: column;
+    width: 50%;
+    margin: 0 auto;
+    border: 1px solid;
+    border-radius: 5px;
+    padding: 3%;
 
-    label {
-      font-size: 1rem;
-      font-weight: 700;
-      margin-bottom: 0.5%;
+    &_item {
+      display: flex;
+      flex-direction: column;
+
+      label {
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 0.5%;
+      }
+
+      input {
+        margin-bottom: 10px;
+        padding: 1%;
+      }
     }
+    &_btn {
+      display: flex;
+      justify-content: center;
+      gap: 1%;
 
-    input {
-      margin-bottom: 10px;
-      padding: 1%;
-    }
-  }
-  &_btn {
-    display: flex;
-    justify-content: center;
-    gap: 1%;
+      &_cancel {
+        @include button($primary-lightColor, $primary-darkColor900, null);
+        width: 50%;
+        margin-top: 3%;
 
-    &_cancel {
-      background-color: white;
-      color: black;
-    }
+        &:hover {
+          border: 1px solid $primary-darkColor900;
+        }
+      }
 
-    &_add {
-      background-color: black;
-      color: white;
-    }
-
-    button {
-      width: 50%;
-      margin-top: 10px;
-      padding: 1%;
-      font-size: 1rem;
-      font-weight: 700;
-
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
+      &_add {
+        @include button(
+          $primary-darkColor900,
+          $primary-lightColor,
+          $primary-darkColor800
+        );
+        width: 50%;
+        margin-top: 3%;
+      }
     }
   }
 }

@@ -50,13 +50,13 @@ export default function WinesList() {
         <table className={styles.wineList_table}>
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Producer</th>
-              <th>From</th>
-              <th>Grapes</th>
-              <th>Color</th>
-              <th>Price</th>
-              <th>Quantity</th>
+              <th>Nome</th>
+              <th>Produtor</th>
+              <th>Região</th>
+              <th>Castas</th>
+              <th>Cor</th>
+              <th>Preço</th>
+              <th>Quantidade</th>
               <th></th>
               <th></th>
             </tr>
@@ -75,10 +75,17 @@ export default function WinesList() {
                 <td>
                   <form action={deleteWine}>
                     <input type="hidden" name="id" value={wine.id} />
-                    <button type="submit">Delete</button>
+                    <button
+                      className={styles.wineList_table_delete_btn}
+                      type="submit"
+                    >
+                      Delete
+                    </button>
                   </form>
                 </td>
-                <EditWine wine={wine} />
+                <td>
+                  <EditWine wine={wine} />
+                </td>
               </tr>
             ))}
           </tbody>

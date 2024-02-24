@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { updateWine } from "../../server-actions/updateWine";
+import styles from "./editWine.module.scss";
 
 export default function EditWines({ wine }) {
   const [showModal, setShowModal] = useState(false);
@@ -21,7 +22,12 @@ export default function EditWines({ wine }) {
 
   return (
     <div>
-      <button onClick={() => setShowModal(true)}>Edit</button>
+      <button
+        className={styles.editWine_edit_btn}
+        onClick={() => setShowModal(true)}
+      >
+        Edit
+      </button>
       {showModal && (
         <div>
           <form action={updateWine} onSubmit={() => setShowModal(false)}>
