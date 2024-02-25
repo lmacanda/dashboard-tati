@@ -18,3 +18,14 @@ $primary-tatiColor: rgb(221, 218, 186);
     background-color: $hover-background-color;
   }
 }
+
+@mixin form($background-color, $border-color, $border-radius, $padding) {
+  background-color: $background-color;
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  margin: 0 auto;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  padding: $padding;
+}

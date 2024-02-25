@@ -26,7 +26,7 @@ export default function WinesList() {
             <tr>
               <th>Nome</th>
               <th>Produtor</th>
-              <th>
+              <th className={styles.wineList_table_region}>
                 <label htmlFor="regionFilter">Região:</label>
                 <select
                   id="regionFilter"

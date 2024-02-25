@@ -28,6 +28,12 @@
       border: 1px solid #1b1b1b;
 
       padding: 0.75rem;
+
+      &:nth-child(3),
+      &:nth-child(4),
+      &:nth-child(5) {
+        text-align: center;
+      }
     }
 
     td {
@@ -42,6 +48,19 @@
       );
       width: 100%;
       margin-top: 3%;
+    }
+
+    label {
+      position: relative;
+    }
+
+    select {
+      display: block;
+      margin: 0 auto;
+      border-radius: 5px;
+      border-color: $primary-lightColor;
+      padding: 5%;
+      margin-top: 5%;
     }
   }
 }

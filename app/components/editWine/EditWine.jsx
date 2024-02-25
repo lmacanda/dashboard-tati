@@ -22,17 +22,23 @@ export default function EditWines({ wine }) {
 
   return (
     <div>
-      <button
-        className={styles.editWine_edit_btn}
-        onClick={() => setShowModal(true)}
-      >
-        Edit
-      </button>
+      {!showModal && (
+        <button
+          className={styles.editWine_edit_btn}
+          onClick={() => setShowModal(true)}
+        >
+          Edit
+        </button>
+      )}
       {showModal && (
         <div>
-          <form action={updateWine} onSubmit={() => setShowModal(false)}>
+          <form
+            action={updateWine}
+            onSubmit={() => setShowModal(false)}
+            className={styles.editWine_form}
+          >
             <input type="hidden" name="id" value={wine.id} />
-            <div>
+            <div className={styles.editWine_form_item}>
               <label htmlFor="name">Nome</label>
               <input
                 type="text"
@@ -42,7 +48,7 @@ export default function EditWines({ wine }) {
                 onChange={handleChange}
               />
             </div>
-            <div>
+            <div className={styles.editWine_form_item}>
               <label htmlFor="producer">Produtor</label>
               <input
                 type="text"
@@ -52,7 +58,7 @@ export default function EditWines({ wine }) {
                 onChange={handleChange}
               />
             </div>
-            <div>
+            <div className={styles.editWine_form_item}>
               <label htmlFor="year">Year</label>
               <input
                 type="text"
@@ -62,7 +68,7 @@ export default function EditWines({ wine }) {
                 onChange={handleChange}
               />
             </div>
-            <div>
+            <div className={styles.editWine_form_item}>
               <label htmlFor="region">Região</label>
               <input
                 type="text"
@@ -72,7 +78,7 @@ export default function EditWines({ wine }) {
                 onChange={handleChange}
               />
             </div>
-            <div>
+            <div className={styles.editWine_form_item}>
               <label htmlFor="grapes">Castas</label>
               <input
                 type="text"
@@ -82,7 +88,7 @@ export default function EditWines({ wine }) {
                 onChange={handleChange}
               />
             </div>
-            <div>
+            <div className={styles.editWine_form_item}>
               <label htmlFor="color">Cor</label>
               <input
                 type="text"
@@ -92,7 +98,7 @@ export default function EditWines({ wine }) {
                 onChange={handleChange}
               />
             </div>
-            <div>
+            <div className={styles.editWine_form_item}>
               <label htmlFor="price">Preço</label>
               <input
                 type="number"
@@ -102,7 +108,7 @@ export default function EditWines({ wine }) {
                 onChange={handleChange}
               />
             </div>
-            <div>
+            <div className={styles.editWine_form_item}>
               <label htmlFor="quantity">Quantidade</label>
               <input
                 type="number"
@@ -113,10 +119,17 @@ export default function EditWines({ wine }) {
               />
             </div>
             <div>
-              <button type="submit">Edit</button>
+              <button type="submit" className={styles.editWine_form_edit_btn}>
+                Edit
+              </button>
             </div>
           </form>
-          <button onClick={() => setShowModal(false)}>Close</button>
+          <button
+            onClick={() => setShowModal(false)}
+            className={styles.editWine_form_close_btn}
+          >
+            Cancela
+          </button>
         </div>
       )}
     </div>
