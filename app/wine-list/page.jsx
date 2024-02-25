@@ -16,7 +16,9 @@ export default function WinesList() {
     <main className={styles.wineList}>
       <h1 className={styles.wineList_title}>Lista Vinhos</h1>
       <form action="/auth/signout" method="post">
-        <button type="submit">Sign Out</button>
+        <button type="submit" style={{ display: "none" }}>
+          Sign Out
+        </button>
       </form>
       <WineForm />
 
