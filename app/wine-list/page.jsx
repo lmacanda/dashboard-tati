@@ -1,42 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { fetchWines } from "../server-actions/supabaseFetch";
 import { deleteWine } from "../server-actions/deleteWine";
 import EditWine from "../components/editWine/EditWine";
 import WineForm from "../components/wineForm/WineForm";
 import styles from "./page.module.scss";
+import { useWineContext } from "../context/wineContext";
 
 export default function WinesList() {
-  const [wines, setWines] = useState([]);
-  const [error, setError] = useState(null);
+  const { wines, filteredWines, handleFilterChange } = useWineContext();
 
-  const fetchData = async () => {
-    try {
-      const { data, error } = await fetchWines();
-      if (error) {
-        throw new Error("Error fetching wine data");
-      }
-      setWines(data || []);
-    } catch (error) {
-      setError(error.message);
-    }
-  };
-
-  useEffect(() => {
-    // Fetch initial data on component mount
-    fetchData();
-
-    // Set up periodic refresh every 5 seconds
-    const intervalId = setInterval(fetchData, 2000);
-
-    // Clean up the interval on component unmount
-    return () => clearInterval(intervalId);
-  }, []); // Run once on component mount
-
-  const handleWineAdded = (newWine) => {
-    setWines([...wines, newWine]);
-  };
+  const uniqueRegions = [...new Set(wines.map((wine) => wine.region))];
+  const uniqueGrapes = [...new Set(wines.map((wine) => wine.grapes))];
 
   return (
     <main className={styles.wineList}>
@@ -44,7 +18,7 @@ export default function WinesList() {
       <form action="/auth/signout" method="post">
         <button type="submit">Sign Out</button>
       </form>
-      <WineForm onWineAdded={handleWineAdded} />
+      <WineForm />
 
       <div>
         <table className={styles.wineList_table}>
@@ -52,9 +26,46 @@ export default function WinesList() {
             <tr>
               <th>Nome</th>
               <th>Produtor</th>
-              <th>Região</th>
-              <th>Castas</th>
-              <th>Cor</th>
+              <th>
+                <label htmlFor="regionFilter">Região:</label>
+                <select
+                  id="regionFilter"
+                  onChange={(e) => handleFilterChange("region", e.target.value)}
+                >
+                  <option value="">All</option>
+                  {uniqueRegions.map((region) => (
+                    <option key={region} value={region}>
+                      {region}
+                    </option>
+                  ))}
+                </select>
+              </th>
+              <th>
+                <label htmlFor="grapesFilter">Castas:</label>
+                <select
+                  id="grapesFilter"
+                  onChange={(e) => handleFilterChange("grapes", e.target.value)}
+                >
+                  <option value="">All</option>
+                  {uniqueGrapes.map((grape) => (
+                    <option key={grape} value={grape}>
+                      {grape}
+                    </option>
+                  ))}
+                </select>
+              </th>
+              <th>
+                <label htmlFor="colorFilter">Cor:</label>
+                <select
+                  id="colorFilter"
+                  onChange={(e) => handleFilterChange("color", e.target.value)}
+                >
+                  <option value="">All</option>
+                  <option value="rosé">Rosé</option>
+                  <option value="Branco">White</option>
+                  <option value="Tinto">Red</option>
+                </select>
+              </th>
               <th>Preço</th>
               <th>Quantidade</th>
               <th></th>
@@ -63,11 +74,11 @@ export default function WinesList() {
           </thead>
 
           <tbody>
-            {wines.map((wine) => (
+            {(filteredWines.length > 0 ? filteredWines : wines).map((wine) => (
               <tr key={wine.id}>
                 <td>{wine.name}</td>
                 <td>{wine.producer}</td>
-                <td>{wine.from}</td>
+                <td>{wine.region}</td>
                 <td>{wine.grapes}</td>
                 <td>{wine.color}</td>
                 <td>{wine.price}€</td>
