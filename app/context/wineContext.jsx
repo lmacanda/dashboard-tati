@@ -40,11 +40,19 @@ export const WineProvider = ({ children }) => {
 
     setFilteredWines(filteredData);
   };
+
+  const deleteWine = async (id) => {
+    const updatedWines = wines.filter((wine) => wine.id !== id);
+    setWines(updatedWines);
+    setFilteredWines(updatedWines);
+  };
+
   const contextValue = {
     wines,
     filteredWines,
     error,
     handleFilterChange,
+    deleteWine,
   };
 
   return (
