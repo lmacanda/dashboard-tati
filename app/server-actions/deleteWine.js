@@ -24,7 +24,6 @@ export async function deleteWine(formData) {
 
     console.log("Wine deleted successfully!");
 
-    // Optionally, you can revalidate the data if needed
     revalidatePath("/wine-list");
 
     return { message: "Wine deleted successfully!" };
