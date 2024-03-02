@@ -40,7 +40,13 @@ export default function WineForm() {
           </div>
           <div className={style.wineForm_form_item}>
             <label htmlFor="grapes">Castas</label>
-            <input type="text" id="grapes" name="grapes" multiple />
+            <input
+              type="text"
+              id="grapes"
+              name="grapes"
+              placeholder="arinto, fernão pires, castelão"
+              multiple
+            />
           </div>
           <div className={style.wineForm_form_item}>
             <label htmlFor="color">Cor</label>

@@ -9,7 +9,10 @@ export async function addWine(formData) {
   const producer = formData.get("producer");
   const year = formData.get("year");
   const region = formData.get("region");
-  const grapes = formData.get("grapes");
+  const grapes = formData
+    .get("grapes")
+    .split(",")
+    .map((grape) => grape.trim());
   const color = formData.get("color");
   const price = formData.get("price");
   const quantity = formData.get("quantity");

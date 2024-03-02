@@ -8,8 +8,7 @@
       $primary-darkColor800
     );
     display: block;
-    margin: 0 auto;
-    margin-bottom: 3%;
+    margin: 3% auto;
   }
   &_form {
     @include form($primary-lightColor, $primary-darkColor900, 5px, 3%);

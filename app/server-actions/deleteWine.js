@@ -11,17 +11,25 @@ export async function deleteWine(formData) {
   const cookiesStore = cookies();
   const supabase = createServerComponentClient({ cookies: () => cookiesStore });
 
-  const { data, error } = await supabase
-    .from("wines")
-    .delete()
-    .match({ id: wineID });
+  try {
+    const { data, error } = await supabase
+      .from("wines")
+      .delete()
+      .match({ id: parseInt(wineID) });
 
-  if (error) {
-    console.error(error);
-    return { error: "error inserting data", error };
+    if (error) {
+      console.error(error);
+      return { error: "error deleting data", error };
+    }
+
+    console.log("Wine deleted successfully!");
+
+    // Optionally, you can revalidate the data if needed
+    revalidatePath("/wine-list");
+
+    return { message: "Wine deleted successfully!" };
+  } catch (error) {
+    console.error("An unexpected error occurred:", error.message);
+    return { error: "An unexpected error occurred", error };
   }
-
-  revalidatePath("/wine-list");
-
-  return { message: "Wine added successfully!" };
 }

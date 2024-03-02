@@ -34,8 +34,22 @@ export const WineProvider = ({ children }) => {
     const lowercasedFilterValue = filterValue.toLowerCase();
 
     const filteredData = wines.filter((wine) => {
-      const lowercasedWineValue = String(wine[filterType]).toLowerCase();
-      return lowercasedWineValue.includes(lowercasedFilterValue);
+      if (filterType === "grapes") {
+        // Check if the selected grape is included in the wine's grapes array
+        const selectedGrapes = lowercasedFilterValue.split(",");
+        return selectedGrapes.every((grape) =>
+          wine.grapes.includes(grape.trim())
+        );
+      } else if (Array.isArray(wine[filterType])) {
+        // Handle array filtering for other array fields
+        return wine[filterType]
+          .map((item) => item.toLowerCase())
+          .includes(lowercasedFilterValue);
+      } else {
+        // For non-array fields, use the existing logic
+        const lowercasedWineValue = String(wine[filterType]).toLowerCase();
+        return lowercasedWineValue.includes(lowercasedFilterValue);
+      }
     });
 
     setFilteredWines(filteredData);

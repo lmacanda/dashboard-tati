@@ -9,8 +9,10 @@ import { useWineContext } from "../context/wineContext";
 export default function WinesList() {
   const { wines, filteredWines, handleFilterChange } = useWineContext();
 
+  const allGrapes = wines.flatMap((wine) => wine.grapes || []);
+
   const uniqueRegions = [...new Set(wines.map((wine) => wine.region))];
-  const uniqueGrapes = [...new Set(wines.map((wine) => wine.grapes))];
+  const uniqueGrapes = [...new Set(allGrapes)];
 
   return (
     <main className={styles.wineList}>
@@ -81,7 +83,16 @@ export default function WinesList() {
                 <td>{wine.name}</td>
                 <td>{wine.producer}</td>
                 <td>{wine.region}</td>
-                <td>{wine.grapes}</td>
+                <td>
+                  {wine.grapes &&
+                    Array.isArray(wine.grapes) &&
+                    wine.grapes.map((grape, index) => (
+                      <span key={index}>
+                        {grape}
+                        {index < wine.grapes.length - 1 && ", "}
+                      </span>
+                    ))}
+                </td>
                 <td>{wine.color}</td>
                 <td>{wine.price}€</td>
                 <td>{wine.quantity}</td>
