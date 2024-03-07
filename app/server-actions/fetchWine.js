@@ -6,7 +6,6 @@ export async function fetchWines() {
   const cookieStore = cookies();
   const supabase = createServerComponentClient({ cookies: () => cookieStore });
   const { data, error } = await supabase.from("wines").select("*");
-  console.log(data);
 
   return { data, error };
 }

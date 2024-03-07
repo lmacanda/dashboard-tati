@@ -1,0 +1,47 @@
+@import "../base";
+
+.loginForm {
+  width: 30%;
+  display: block;
+  margin: 0 auto;
+  padding-top: 10%;
+  &_form {
+    @include form($primary-lightColor, $primary-darkColor900, 5px, 3%);
+
+    &_item {
+      display: flex;
+      flex-direction: column;
+
+      input {
+        margin-bottom: 10px;
+        padding: 1%;
+      }
+    }
+    &_btn {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1%;
+
+      &_signUp {
+        @include button($primary-lightColor, $primary-darkColor900, null);
+
+        margin-top: 3%;
+
+        &:hover {
+          border: 1px solid $primary-darkColor900;
+        }
+      }
+
+      &_signIn {
+        @include button(
+          $primary-darkColor900,
+          $primary-lightColor,
+          $primary-darkColor800
+        );
+
+        margin-top: 3%;
+      }
+    }
+  }
+}
