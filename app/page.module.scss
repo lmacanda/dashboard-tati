@@ -1,19 +1,17 @@
 @import "./base";
 
 .home {
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
   background-color: $primary-tatiColor;
   height: 100vh;
-  width: 100vh;
-  min-width: 2600px;
+  width: 100%;
 
   h1 {
     text-align: center;
     padding-top: 10%;
+  }
+
+  &_header {
+    display: flex;
+    justify-content: space-between;
   }
 }

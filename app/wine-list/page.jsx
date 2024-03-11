@@ -7,12 +7,18 @@ import styles from "./page.module.scss";
 import { useWineContext } from "../context/wineContext";
 
 export default function WinesList() {
-  const { wines, filteredWines, handleFilterChange } = useWineContext();
+  const {
+    wines,
+    filteredWines,
+    handleFilterChange,
+    getAllGrapes,
+    getUniqueValues,
+  } = useWineContext();
 
-  const allGrapes = wines.flatMap((wine) => wine.grapes || []);
+  const allGrapes = getAllGrapes();
 
-  const uniqueRegions = [...new Set(wines.map((wine) => wine.region))];
-  const uniqueGrapes = [...new Set(allGrapes)];
+  const uniqueRegions = getUniqueValues("region");
+  const uniqueGrapes = getUniqueValues("grapes");
 
   return (
     <main className={styles.wineList}>

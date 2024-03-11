@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useWineContext } from "../context/wineContext";
+import Slider from "@mui/material/Slider";
 import styles from "./page.module.scss";
 
 const WineMenu = () => {
@@ -29,12 +30,60 @@ const WineMenu = () => {
   };
 
   const randomColor = getRandomPastelColor();
-  const { wines, filteredWines, handleFilterChange } = useWineContext();
+  const {
+    wines,
+    filteredWines,
+    handleFilterChange,
+    getAllGrapes,
+    getUniqueValues,
+  } = useWineContext();
+
+  const allGrapes = getAllGrapes();
+
+  const uniqueRegions = getUniqueValues("region");
+  const uniqueGrapes = getUniqueValues("grapes");
 
   const displayedData = filteredWines.length > 0 ? filteredWines : wines;
 
   return (
     <div className={styles.wineMenu}>
+      <h1 className={styles.wineMenu_title}>Wine Menu</h1>
+      <div>
+        <label htmlFor="regionFilter">Região:</label>
+        <select
+          id="regionFilter"
+          onChange={(e) => handleFilterChange("region", e.target.value)}
+        >
+          <option value="">All</option>
+          {uniqueRegions.map((region) => (
+            <option key={region} value={region}>
+              {region}
+            </option>
+          ))}
+        </select>
+        <label htmlFor="grapesFilter">Castas:</label>
+        <select
+          id="grapesFilter"
+          onChange={(e) => handleFilterChange("grapes", e.target.value)}
+        >
+          <option value="">All</option>
+          {uniqueGrapes.map((grape) => (
+            <option key={grape} value={grape}>
+              {grape}
+            </option>
+          ))}
+        </select>
+        <label htmlFor="colorFilter">Cor:</label>
+        <select
+          id="colorFilter"
+          onChange={(e) => handleFilterChange("color", e.target.value)}
+        >
+          <option value="">All</option>
+          <option value="rosé">Rosé</option>
+          <option value="Branco">White</option>
+          <option value="Tinto">Red</option>
+        </select>
+      </div>
       {displayedData.length === 0 ? (
         <h1>No wines found</h1>
       ) : (

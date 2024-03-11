@@ -55,6 +55,12 @@ export const WineProvider = ({ children }) => {
     setFilteredWines(filteredData);
   };
 
+  const getAllGrapes = () => wines.flatMap((wine) => wine.grapes || []);
+
+  const getUniqueValues = (key) => {
+    return [...new Set(wines.map((wine) => wine[key]))];
+  };
+
   const deleteWine = async (id) => {
     const updatedWines = wines.filter((wine) => wine.id !== id);
     setWines(updatedWines);
@@ -67,6 +73,8 @@ export const WineProvider = ({ children }) => {
     error,
     handleFilterChange,
     deleteWine,
+    getAllGrapes,
+    getUniqueValues,
   };
 
   return (
