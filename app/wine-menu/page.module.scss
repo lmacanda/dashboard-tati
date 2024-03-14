@@ -1,9 +1,56 @@
 .wineMenu {
   display: flex;
+  flex-direction: column;
+
+  &_form {
+    display: flex;
+    flex-direction: column;
+    gap: 3%;
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    transition: all 0.3s ease-in-out;
+
+    &_select {
+      display: flex;
+
+      flex-direction: row;
+      justify-content: space-between;
+
+      &_item {
+        width: 33%;
+        display: flex;
+        flex-direction: column;
+      }
+    }
+
+    label {
+      display: inline;
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: #000;
+    }
+
+    select {
+      width: 100%;
+      height: 3rem;
+      padding: 0.5rem;
+      border: 1px solid #000;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: 500;
+      color: #000;
+    }
+  }
 
   &_product {
+    display: flex;
+    flex-direction: row;
     &_card {
       display: flex;
+
       gap: 3%;
 
       align-items: center;

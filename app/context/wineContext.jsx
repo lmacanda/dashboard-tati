@@ -40,6 +40,7 @@ export const WineProvider = ({ children }) => {
 
     fetchData();
   }, []);
+
   const handleFilterChange = (filterType, filterValue) => {
     if (filterType === "price") {
       const [minPrice, maxPrice] = filterValue;
@@ -53,8 +54,8 @@ export const WineProvider = ({ children }) => {
       const lowercasedFilterValue = String(filterValue).toLowerCase();
       const filteredData = wines.filter((wine) => {
         if (filterType === "grapes") {
-          const selectedGrapes = lowercasedFilterValue.split(",");
-          return selectedGrapes.every((grape) =>
+          const selectedGrapes = filterValue.split(","); // Split without lowercasing
+          return selectedGrapes.some((grape) =>
             wine.grapes.includes(grape.trim())
           );
         } else if (Array.isArray(wine[filterType])) {

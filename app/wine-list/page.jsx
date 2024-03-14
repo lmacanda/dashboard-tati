@@ -71,9 +71,16 @@ export default function WinesList() {
                   onChange={(e) => handleFilterChange("color", e.target.value)}
                 >
                   <option value="">All</option>
-                  <option value="rosé">Rosé</option>
-                  <option value="Branco">White</option>
-                  <option value="Tinto">Red</option>
+                  <option value="branco">branco</option>
+                  <option value="tinto">tinto</option>
+                  <option value="rosè">rosé</option>
+                  <option value="espumante">espumante</option>
+                  <option value="fortificado">fortificado</option>
+                  {filteredWines.length === 0 && (
+                    <p style={{ textAlign: "center" }}>
+                      Nenhuma cor selecionada.
+                    </p>
+                  )}
                 </select>
               </th>
               <th>Preço</th>
