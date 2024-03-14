@@ -9,6 +9,21 @@ export const WineProvider = ({ children }) => {
   const [wines, setWines] = useState([]);
   const [filteredWines, setFilteredWines] = useState([]);
   const [error, setError] = useState(null);
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(0);
+
+  const setMinMaxPrice = () => {
+    if (!wines || wines.length === 0) {
+      return;
+    }
+
+    const prices = wines.map((wine) => wine.price);
+    const minPrice = Math.min(...prices);
+    const maxPrice = Math.max(...prices);
+
+    setMinPrice(minPrice);
+    setMaxPrice(maxPrice);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,33 +41,33 @@ export const WineProvider = ({ children }) => {
     fetchData();
   }, []);
   const handleFilterChange = (filterType, filterValue) => {
-    if (!filterValue || filterValue === "All") {
+    if (filterType === "price") {
+      const [minPrice, maxPrice] = filterValue;
+      const filteredData = wines.filter(
+        (wine) => wine.price >= minPrice && wine.price <= maxPrice
+      );
+      setFilteredWines(filteredData);
+    } else if (!filterValue || filterValue === "All") {
       setFilteredWines(wines);
-      return;
+    } else {
+      const lowercasedFilterValue = String(filterValue).toLowerCase();
+      const filteredData = wines.filter((wine) => {
+        if (filterType === "grapes") {
+          const selectedGrapes = lowercasedFilterValue.split(",");
+          return selectedGrapes.every((grape) =>
+            wine.grapes.includes(grape.trim())
+          );
+        } else if (Array.isArray(wine[filterType])) {
+          return wine[filterType]
+            .map((item) => String(item).toLowerCase())
+            .includes(lowercasedFilterValue);
+        } else {
+          const lowercasedWineValue = String(wine[filterType]).toLowerCase();
+          return lowercasedWineValue.includes(lowercasedFilterValue);
+        }
+      });
+      setFilteredWines(filteredData);
     }
-
-    const lowercasedFilterValue = filterValue.toLowerCase();
-
-    const filteredData = wines.filter((wine) => {
-      if (filterType === "grapes") {
-        // Check if the selected grape is included in the wine's grapes array
-        const selectedGrapes = lowercasedFilterValue.split(",");
-        return selectedGrapes.every((grape) =>
-          wine.grapes.includes(grape.trim())
-        );
-      } else if (Array.isArray(wine[filterType])) {
-        // Handle array filtering for other array fields
-        return wine[filterType]
-          .map((item) => item.toLowerCase())
-          .includes(lowercasedFilterValue);
-      } else {
-        // For non-array fields, use the existing logic
-        const lowercasedWineValue = String(wine[filterType]).toLowerCase();
-        return lowercasedWineValue.includes(lowercasedFilterValue);
-      }
-    });
-
-    setFilteredWines(filteredData);
   };
 
   const getAllGrapes = () => wines.flatMap((wine) => wine.grapes || []);
@@ -75,6 +90,9 @@ export const WineProvider = ({ children }) => {
     deleteWine,
     getAllGrapes,
     getUniqueValues,
+    setMinMaxPrice,
+    minPrice,
+    maxPrice,
   };
 
   return (

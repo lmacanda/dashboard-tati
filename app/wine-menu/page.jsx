@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useWineContext } from "../context/wineContext";
 import Slider from "@mui/material/Slider";
 import styles from "./page.module.scss";
@@ -36,7 +36,41 @@ const WineMenu = () => {
     handleFilterChange,
     getAllGrapes,
     getUniqueValues,
+    setMinMaxPrice,
+    minPrice,
+    maxPrice,
   } = useWineContext();
+
+  useEffect(() => {
+    setMinMaxPrice();
+  }, [wines, setMinMaxPrice]);
+
+  const [value, setValue] = useState([minPrice, maxPrice]);
+
+  const marks = [
+    {
+      value: minPrice,
+      label: `${minPrice}€`,
+    },
+    {
+      value: maxPrice,
+      label: `${maxPrice}€`,
+    },
+  ];
+
+  useEffect(() => {
+    setValue([minPrice, maxPrice]);
+  }, [minPrice, maxPrice]);
+
+  const handleChange = (event, newValue) => {
+    event.preventDefault();
+    setValue(newValue);
+    handleFilterChange("price", newValue);
+  };
+
+  const valuetext = (value) => {
+    return `${value}€`;
+  };
 
   const allGrapes = getAllGrapes();
 
@@ -83,6 +117,15 @@ const WineMenu = () => {
           <option value="Branco">White</option>
           <option value="Tinto">Red</option>
         </select>
+        <Slider
+          getAriaLabel={() => "Price range"}
+          value={value}
+          onChange={handleChange}
+          valueLabelDisplay="auto"
+          getAriaValueText={valuetext}
+          min={minPrice}
+          marks={marks}
+        />
       </div>
       {displayedData.length === 0 ? (
         <h1>No wines found</h1>
