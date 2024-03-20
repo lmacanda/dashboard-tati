@@ -1,23 +1,110 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { fetchWines } from "../server-actions/fetchWine";
+import { v4 as uuidv4 } from "uuid";
 
 const WineContext = createContext();
 
 export const WineProvider = ({ children }) => {
-  const [wines, setWines] = useState([]);
+  const idOne = uuidv4();
+  const idTwo = uuidv4();
+  const idThree = uuidv4(); // Adding idThree
+
+  let initialWines = {
+    [idOne]: {
+      id: 1,
+      name: "Quinta do Crasto",
+      year: 2019,
+      producer: "Quinta do Crasto",
+      region: "Alentejo",
+      grapes: ["Tinta Roriz"],
+      color: "Tinto",
+      price: 20,
+    },
+    [idTwo]: {
+      id: 2,
+      name: "Quinta do Vallado",
+      year: 2019,
+      producer: "Quinta do Vallado",
+      region: "Douro",
+      grapes: ["Tinta Roriz", "Touriga Nacional", "Touriga Franca"],
+      color: "Tinto",
+      price: 25,
+    },
+    [idThree]: {
+      id: 3,
+      name: "Poeira",
+      year: 2019,
+      producer: "Poeira",
+      region: "Dão",
+      grapes: ["Tinta Roriz", "Touriga Nacional", "Touriga Franca"],
+      color: "Branco",
+      price: 30,
+    },
+  };
+
+  const getWines = () => Object.values(initialWines); // Changed to getWines
+
+  const [winesData, setWinesData] = useState([]); // Changed to winesData
+
+  useEffect(() => {
+    setWinesData(getWines());
+  }, []); // Run only on initial mount
+
+  const addWine = (data) => {
+    new Promise((resolve, reject) => {
+      if (
+        !data.name ||
+        !data.price ||
+        !data.producer ||
+        !data.year ||
+        !data.region ||
+        !data.grapes ||
+        !data.color
+      ) {
+        throw new Error("Not all information provided");
+      }
+
+      const id = uuidv4();
+      const newWine = { id, ...data };
+
+      initialWines = { ...initialWines, [id]: newWine }; // Changed to wines
+
+      setTimeout(() => resolve(true), 250);
+    });
+  };
+
+  // usage
+  const doAddWine = async (data) => {
+    try {
+      const result = addWine(data);
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  doAddWine({
+    name: "Chardonnay",
+    price: 20,
+    producer: "Quinta da Galeira",
+    year: 2019,
+    region: "Alentejo",
+    grapes: ["Tinta Roriz"],
+    color: "Tinto",
+  });
+
   const [filteredWines, setFilteredWines] = useState([]);
-  const [error, setError] = useState(null);
+
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(0);
 
   const setMinMaxPrice = () => {
-    if (!wines || wines.length === 0) {
+    if (!winesData || winesData.length === 0) {
       return;
     }
 
-    const prices = wines.map((wine) => wine.price);
+    const prices = winesData.map((wine) => wine.price);
     const minPrice = Math.min(...prices);
     const maxPrice = Math.max(...prices);
 
@@ -26,33 +113,21 @@ export const WineProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { data, error } = await fetchWines();
-        if (error) {
-          throw new Error("Error fetching wine data");
-        }
-        setWines(data || []);
-      } catch (error) {
-        setError(error.message);
-      }
-    };
-
-    fetchData();
-  }, []);
+    setMinMaxPrice();
+  }, [winesData]);
 
   const handleFilterChange = (filterType, filterValue) => {
     if (filterType === "price") {
       const [minPrice, maxPrice] = filterValue;
-      const filteredData = wines.filter(
+      const filteredData = winesData.filter(
         (wine) => wine.price >= minPrice && wine.price <= maxPrice
       );
       setFilteredWines(filteredData);
     } else if (!filterValue || filterValue === "All") {
-      setFilteredWines(wines);
+      setFilteredWines(winesData);
     } else {
       const lowercasedFilterValue = String(filterValue).toLowerCase();
-      const filteredData = wines.filter((wine) => {
+      const filteredData = winesData.filter((wine) => {
         if (filterType === "grapes") {
           const selectedGrapes = filterValue.split(","); // Split without lowercasing
           return selectedGrapes.some((grape) =>
@@ -71,25 +146,28 @@ export const WineProvider = ({ children }) => {
     }
   };
 
-  const getAllGrapes = () => wines.flatMap((wine) => wine.grapes || []);
+  const getUniqueGrapes = () => {
+    const allGrapes = winesData.flatMap((wine) => wine.grapes || []);
+    return [...new Set(allGrapes)];
+  };
 
   const getUniqueValues = (key) => {
-    return [...new Set(wines.map((wine) => wine[key]))];
+    return [...new Set(winesData.map((wine) => wine[key]))];
   };
 
   const deleteWine = async (id) => {
-    const updatedWines = wines.filter((wine) => wine.id !== id);
-    setWines(updatedWines);
+    const updatedWines = winesData.filter((wine) => wine.id !== id);
+    setWinesData(updatedWines);
     setFilteredWines(updatedWines);
   };
 
   const contextValue = {
-    wines,
+    wines: winesData,
     filteredWines,
-    error,
+
     handleFilterChange,
     deleteWine,
-    getAllGrapes,
+    getUniqueGrapes,
     getUniqueValues,
     setMinMaxPrice,
     minPrice,

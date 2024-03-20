@@ -34,7 +34,7 @@ const WineMenu = () => {
     wines,
     filteredWines,
     handleFilterChange,
-    getAllGrapes,
+    getUniqueGrapes,
     getUniqueValues,
     setMinMaxPrice,
     minPrice,
@@ -72,10 +72,8 @@ const WineMenu = () => {
     return `${value}€`;
   };
 
-  const allGrapes = getAllGrapes();
-
   const uniqueRegions = getUniqueValues("region");
-  const uniqueGrapes = getUniqueValues("grapes");
+  const uniqueGrapes = getUniqueGrapes();
 
   const displayedData = filteredWines.length > 0 ? filteredWines : wines;
 

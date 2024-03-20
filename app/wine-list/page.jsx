@@ -9,25 +9,20 @@ import { useWineContext } from "../context/wineContext";
 export default function WinesList() {
   const {
     wines,
+
     filteredWines,
     handleFilterChange,
-    getAllGrapes,
+    getUniqueGrapes,
     getUniqueValues,
   } = useWineContext();
 
-  const allGrapes = getAllGrapes();
-
   const uniqueRegions = getUniqueValues("region");
-  const uniqueGrapes = getUniqueValues("grapes");
+  const uniqueGrapes = getUniqueGrapes();
 
   return (
     <main className={styles.wineList}>
       <h1 className={styles.wineList_title}>Lista Vinhos</h1>
-      <form action="/auth/signout" method="post">
-        <button type="submit" style={{ display: "none" }}>
-          Sign Out
-        </button>
-      </form>
+
       <WineForm />
 
       <div>
@@ -76,11 +71,6 @@ export default function WinesList() {
                   <option value="rosè">rosé</option>
                   <option value="espumante">espumante</option>
                   <option value="fortificado">fortificado</option>
-                  {filteredWines.length === 0 && (
-                    <p style={{ textAlign: "center" }}>
-                      Nenhuma cor selecionada.
-                    </p>
-                  )}
                 </select>
               </th>
               <th>Preço</th>
